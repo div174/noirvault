@@ -1,0 +1,54 @@
+<footer class="bg-richblack border-t border-white/5 py-24 mt-auto">
+  <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20 text-subtlegray">
+    
+    <!-- Brand Brand -->
+    <div class="md:col-span-4">
+      <h4 class="text-white font-serif font-bold text-xl mb-8 tracking-[0.2em] uppercase">NOIRVAULT</h4>
+      <p class="text-xs font-light leading-loose max-w-xs">
+          An exploration of silence, texture, and form. <br>
+          Timeless essentials for the modern wardrobe.
+      </p>
+    </div>
+
+    <!-- Navigation -->
+    <div class="md:col-span-2">
+      <h5 class="text-white font-medium mb-8 uppercase tracking-[0.2em] text-[10px] text-gold">Collection</h5>
+      <ul class="space-y-4 text-xs font-light uppercase tracking-wider">
+        <li><a href="#" class="hover:text-white transition">Men</a></li>
+        <li><a href="#" class="hover:text-white transition">Women</a></li>
+        <li><a href="#" class="hover:text-white transition">Accessories</a></li>
+      </ul>
+    </div>
+    
+    <div class="md:col-span-2">
+      <h5 class="text-white font-medium mb-8 uppercase tracking-[0.2em] text-[10px] text-gold">Maison</h5>
+      <ul class="space-y-4 text-xs font-light uppercase tracking-wider">
+        <li><a href="{% url 'about' %}" class="hover:text-white transition">Our Story</a></li>
+        <li><a href="{% url 'contact' %}" class="hover:text-white transition">Contact</a></li>
+        <li><a href="#" class="hover:text-white transition">Legal</a></li>
+      </ul>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="md:col-span-4">
+      <h5 class="text-white font-medium mb-8 uppercase tracking-[0.2em] text-[10px] text-gold">Newsletter</h5>
+      <div class="flex border-b border-white/20 pb-2 focus-within:border-white transition duration-500">
+        <input type="email" placeholder="E-mail"
+          class="w-full bg-transparent border-none focus:ring-0 p-0 text-sm text-white placeholder-white/20">
+        <button class="text-[10px] uppercase tracking-widest text-white hover:text-gold transition">
+          Subscribe
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-[10px] uppercase tracking-widest text-white/30">
+    <p>&copy; {% now "Y" %} NOIRVAULT Studios.</p>
+    <div class="flex gap-6 mt-4 md:mt-0">
+        <a href="#" class="hover:text-white transition">Instagram</a>
+        <a href="#" class="hover:text-white transition">Twitter</a>
+        <a href="#" class="hover:text-white transition">Pinterest</a>
+    </div>
+  </div>
+</footer>

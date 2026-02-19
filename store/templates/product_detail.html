@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-6 py-12">
+    <div class="md:flex gap-12 items-start">
+        <!-- Image Section -->
+        <div class="md:w-1/2 mb-10 md:mb-0">
+            <div class="w-full aspect-[3/4] bg-zincdark rounded-sm overflow-hidden border border-white/5 relative group">
+                {% if object.image %}
+                    <img class="h-full w-full object-cover transition duration-700 group-hover:scale-105" src="{{ object.image.url }}" alt="{{ object.name }}">
+                {% else %}
+                    <div class="h-full w-full bg-zincdark flex items-center justify-center">
+                        <span class="text-white/20 font-serif italic text-lg">Image Pending</span>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Details Section -->
+        <div class="md:w-1/2 flex flex-col justify-center sticky top-24">
+            <div class="mb-6 border-b border-white/10 pb-6">
+                <span class="inline-block text-gold text-xs font-bold uppercase tracking-[0.2em] mb-3">Fall Collection</span>
+                <h1 class="text-4xl md:text-5xl font-serif text-white mb-4 leading-tight">{{ object.name }}</h1>
+                <div class="flex items-center gap-4">
+                    <span class="text-2xl font-light text-softwhite">₹ {{ object.price }}</span>
+                    {% if object.stock > 0 %}
+                        <span class="px-3 py-1 bg-green-900/30 text-green-400 text-[10px] uppercase tracking-wider rounded-full border border-green-900">In Stock</span>
+                    {% else %}
+                        <span class="px-3 py-1 bg-red-900/30 text-red-400 text-[10px] uppercase tracking-wider rounded-full border border-red-900">Sold Out</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <p class="text-subtlegray leading-relaxed font-light text-lg">{{ object.description }}</p>
+                <ul class="mt-6 space-y-2 text-sm text-gray-500 font-light list-disc list-inside marker:text-gold">
+                    <li>Premium material blend</li>
+                    <li>Tailored fit</li>
+                    <li>Dry clean only</li>
+                </ul>
+            </div>
+
+            <div class="mt-8">
+                <form action="{% url 'add-to-cart' object.pk %}" method="post" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <!-- Size Selector (Hidden purely strictly visual for accessories/one-size, but good to have) -->
+                    <!-- Logic: If clothing (Men/Women), show sizes. If Accessories, maybe hide? For now show all for robustness as requested -->
+                    <!-- Size Selector -->
+                    {% if size_list %}
+                    <div>
+                        <label class="block text-xs uppercase tracking-widest text-subtlegray mb-3">Select Size</label>
+                        <div class="flex flex-wrap gap-3">
+                             {% for size in size_list %} 
+                             <label class="cursor-pointer">
+                                 <input type="radio" name="size" value="{{ size }}" class="peer sr-only" {% if forloop.first %}checked{% endif %}>
+                                 <div class="min-w-[3rem] h-10 px-4 flex items-center justify-center border border-white/10 text-subtlegray peer-checked:bg-white peer-checked:text-black peer-checked:border-white transition hover:border-white/40 font-medium text-xs uppercase tracking-wider">
+                                     {{ size }}
+                                 </div>
+                             </label>
+                             {% endfor %}
+                        </div>
+                    </div>
+                    {% else %}
+                        <input type="hidden" name="size" value="One Size">
+                    {% endif %}
+                    
+                    <div>
+                       <label class="block text-xs uppercase tracking-widest text-subtlegray mb-3">Quantity</label>
+                       <div class="flex items-center w-32 border border-white/10">
+                           <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="w-10 h-10 flex items-center justify-center text-white hover:bg-white/5 transition">-</button>
+                           <input type="number" name="quantity" value="1" min="1" max="{{ object.stock }}" class="w-full bg-transparent text-center text-white border-none focus:ring-0 p-0 h-10 appearance-none [-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none">
+                           <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="w-10 h-10 flex items-center justify-center text-white hover:bg-white/5 transition">+</button>
+                       </div>
+                    </div>
+
+                    <div class="flex flex-col gap-4 mt-8">
+                        <button type="submit" class="w-full bg-white text-black py-4 font-bold text-xs uppercase tracking-[0.2em] hover:bg-goldlight transition shadow-lg flex items-center justify-center gap-3">
+                            {% if user.is_authenticated %}
+                                Add to Cart &mdash; ₹ {{ object.price }}
+                            {% else %}
+                                Login to Purchase
+                            {% endif %}
+                        </button>
+                        
+                        <a href="{% url 'cart' %}" class="w-full border border-white/20 text-white py-4 font-bold text-xs uppercase tracking-[0.2em] hover:bg-white/10 transition flex items-center justify-center">
+                            Go to Shopping Bag
+                        </a>
+                    </div>
+                    
+                    {% if not user.is_authenticated %}
+                        <p class="text-xs text-center text-red-400 mt-2">You must be logged in to checkout.</p>
+                    {% endif %}
+                    
+                    <p class="text-center text-[10px] text-subtlegray mt-4 uppercase tracking-wider">Free worldwide shipping on all orders</p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

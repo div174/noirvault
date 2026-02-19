@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+
+  <!-- Hero Section -->
+  <section class="min-h-[60vh] flex flex-col justify-center items-center text-center px-6 relative overflow-hidden pt-20 bg-richblack">
+     <!-- Subtle Glow (Restored - I will add this back to be helpful since they asked for it before) -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[100px] pointer-events-none opacity-60" style="background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, rgba(0,0,0,0) 70%);"></div>
+    <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: url('https://grainy-gradients.vercel.app/noise.svg');"></div>
+
+    <div class="relative z-10 max-w-4xl flex flex-col items-center">
+       <span class="text-gold/80 text-[10px] font-bold tracking-[0.4em] uppercase mb-4 block reveal-on-scroll">Fall 2026 Collection</span>
+       <h2 class="text-5xl md:text-7xl font-serif font-medium leading-[0.9] mb-8 text-softwhite reveal-on-scroll">Silent <span class="italic font-light text-goldlight/90">Elegance</span></h2>
+       <a href="#products" class="border-b border-white/30 text-white pb-1 font-medium text-[10px] tracking-[0.25em] hover:text-gold hover:border-gold transition duration-300 uppercase reveal-on-scroll">Explore</a>
+    </div>
+  </section>
+
+  <!-- PRODUCT SECTION -->
+  <section id="products" class="py-24 px-6 scroll-mt-24">
+    <div class="max-w-7xl mx-auto">
+      <h3 class="text-3xl font-serif text-white mb-16">Latest Arrivals</h3>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 lg:gap-12">
+        {% for product in products %}
+          {% if product.image %}
+            <a href="{% url 'product-detail' product.pk %}" class="block group">
+              <div class="relative aspect-[4/5] overflow-hidden bg-zincdark mb-4">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                <div class="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center">
+                  <span class="text-white text-xs tracking-widest uppercase border-b border-white pb-1">View Details</span>
+                </div>
+              </div>
+              <div class="text-center">
+                <h4 class="text-white font-medium text-sm tracking-wide mb-1 transition group-hover:text-gold">{{ product.name }}</h4>
+                <p class="text-subtlegray text-xs">₹ {{ product.price }}</p>
+              </div>
+            </a>
+          {% endif %}
+        {% empty %}
+          <div class="col-span-full text-center py-24">
+            <p class="text-subtlegray text-xl font-serif italic">Collection coming soon.</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+{% endblock content %}

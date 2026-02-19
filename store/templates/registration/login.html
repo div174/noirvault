@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="h-screen flex flex-col md:flex-row pt-20 md:pt-0">
+    <!-- Editorial Image (Left) -->
+    <div class="hidden md:block md:w-1/2 lg:w-3/5 bg-zincdark relative overflow-hidden">
+        <div class="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-overlay" style="background-image: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop');"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+        <div class="absolute bottom-12 left-12 max-w-md">
+            <h2 class="text-4xl font-serif text-white mb-2 italic">The Art of Silence.</h2>
+            <p class="text-subtlegray text-sm tracking-widest uppercase">Join the inner circle.</p>
+        </div>
+    </div>
+
+    <!-- Form Section (Right) -->
+    <div class="w-full md:w-1/2 lg:w-2/5 bg-richblack flex items-center justify-center p-8 md:p-16 relative">
+        <div class="w-full max-w-sm">
+            <div class="mb-10">
+                <h1 class="text-3xl font-serif text-white mb-2">Welcome Back</h1>
+                <p class="text-subtlegray text-sm">Please enter your details.</p>
+            </div>
+
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                {% if form.errors %}
+                <div class="p-4 bg-red-900/20 border-l-2 border-red-500 text-red-100 text-xs">
+                    Authentication Failed. Please check your credentials.
+                </div>
+                {% endif %}
+
+                <div class="space-y-6">
+                    {% for field in form %}
+                    <div class="group">
+                        <label class="block text-[10px] uppercase tracking-widest text-subtlegray mb-2 transition group-focus-within:text-gold">{{ field.label }}</label>
+                        {{ field }}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit" class="w-full bg-white text-black h-12 hover:bg-goldlight transition-all duration-300 font-medium text-xs uppercase tracking-[0.2em] shadow-lg">
+                        Sign In
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-8 text-center border-t border-white/5 pt-6">
+                <p class="text-xs text-subtlegray">
+                    New to NOIRVAULT? <a href="{% url 'signup' %}" class="text-white hover:text-gold transition border-b border-transparent hover:border-gold pb-0.5">Create an account</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Minimal Line Inputs */
+    input {
+        width: 100%;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 10px 0;
+        color: white;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+    }
+    input:focus {
+        outline: none;
+        border-bottom-color: #D4AF37;
+    }
+    input::placeholder {
+        color: rgba(255, 255, 255, 0.1);
+    }
+    /* Hide specific nav elements if needed via CSS or Block Override, but base.html handles basic nav */
+</style>
+{% endblock %}

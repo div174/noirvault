@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="min-h-[85vh] px-6 py-20 max-w-4xl mx-auto">
+    <div class="text-center mb-16">
+        <span class="text-gold text-[10px] font-bold tracking-[0.4em] uppercase mb-4 block">Secure Payment</span>
+        <h1 class="text-3xl md:text-5xl font-serif text-white">Checkout</h1>
+    </div>
+
+    <div class="bg-zincdark/80 backdrop-blur-md border border-white/5 p-8 md:p-12 shadow-2xl">
+        <div class="grid md:grid-cols-2 gap-12">
+            
+            <!-- Order Review -->
+            <div>
+                <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-white mb-6 border-b border-white/5 pb-4">Order Summary</h3>
+                <div class="space-y-4 mb-8">
+                     <p class="text-sm text-subtlegray flex justify-between">
+                         <span>Items</span>
+                         <span class="text-white">{{ request.session.cart|length }}</span>
+                     </p>
+                     <p class="text-sm text-subtlegray flex justify-between">
+                         <span>Shipping</span>
+                         <span class="text-green-400 text-xs uppercase tracking-wider">Complimentary</span>
+                     </p>
+                </div>
+                
+                <div class="bg-richblack/50 p-6 border border-white/5">
+                    <p class="text-[10px] uppercase tracking-widest text-gold mb-2">Notice</p>
+                    <p class="text-xs text-subtlegray leading-relaxed">This is a demonstration environment. No real payments will be processed. Your data is not stored.</p>
+                </div>
+            </div>
+
+            <!-- Payment Simulation -->
+            <div>
+                <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-white mb-6 border-b border-white/5 pb-4">Payment Details</h3>
+                
+                <form action="{% url 'create-checkout-session' %}" method="post" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <div class="bg-richblack/50 p-6 border border-white/5 mb-6">
+                        <p class="text-xs text-subtlegray leading-relaxed text-center">
+                            You will be redirected to Stripe to securely complete your payment.
+                        </p>
+                    </div>
+
+                    <button type="submit" class="w-full mt-6 bg-white text-black py-4 font-bold text-[11px] uppercase tracking-[0.2em] hover:bg-goldlight transition shadow-lg flex items-center justify-center gap-2">
+                        <span class="mr-2">Proceed to Payment</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    
+                    <p class="text-center text-[10px] text-zinc-600 mt-4 flex justify-center items-center gap-2">
+                        <i class="fas fa-lock"></i> Secured by Stripe
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

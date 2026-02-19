@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="h-screen flex flex-col md:flex-row pt-20 md:pt-0">
+    <!-- Editorial Image (Right on Signup for variety, or Left for consistency. Let's keep Left for consistency) -->
+    <div class="hidden md:block md:w-1/2 lg:w-3/5 bg-zincdark relative overflow-hidden">
+        <div class="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-overlay" style="background-image: url('https://images.unsplash.com/photo-1544441893-675973e31985?q=80&w=2070&auto=format&fit=crop');"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+        <div class="absolute bottom-12 left-12 max-w-md">
+            <h2 class="text-4xl font-serif text-white mb-2 italic">Curated for You.</h2>
+            <p class="text-subtlegray text-sm tracking-widest uppercase">Experience the collection.</p>
+        </div>
+    </div>
+
+    <!-- Form Section -->
+    <div class="w-full md:w-1/2 lg:w-2/5 bg-richblack flex items-center justify-center p-8 md:p-16 relative">
+        <div class="w-full max-w-sm">
+            <div class="mb-10">
+                <h1 class="text-3xl font-serif text-white mb-2">Create Account</h1>
+                <p class="text-subtlegray text-sm">Begin your journey.</p>
+            </div>
+
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                {% if form.errors %}
+                <div class="mb-6">
+                    <p class="text-red-400 text-xs font-medium mb-2 flex items-center gap-2">
+                        <i class="fas fa-exclamation-circle text-[10px]"></i> Authentication Error
+                    </p>
+                    <ul class="text-[10px] text-red-400/80 list-disc list-inside space-y-1 pl-1">
+                         {% for field in form %}
+                            {% for error in field.errors %}<li>{{ error }}</li>{% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <div class="space-y-5">
+                    {% for field in form %}
+                    <div class="group">
+                        <label class="block text-[10px] uppercase tracking-widest text-subtlegray mb-1 transition group-focus-within:text-gold">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                        <p class="text-[9px] text-gray-600 mt-1 opacity-60">{{ field.help_text|striptags }}</p>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="pt-6">
+                    <button type="submit" class="w-full bg-white text-black h-12 hover:bg-goldlight transition-all duration-300 font-medium text-xs uppercase tracking-[0.2em] shadow-lg">
+                        Join NOIRVAULT
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-8 text-center border-t border-white/5 pt-6">
+                <p class="text-xs text-subtlegray">
+                    Already a member? <a href="{% url 'login' %}" class="text-white hover:text-gold transition border-b border-transparent hover:border-gold pb-0.5">Sign in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Minimal Line Inputs */
+    input {
+        width: 100%;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 10px 0;
+        color: white;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+    }
+    input:focus {
+        outline: none;
+        border-bottom-color: #D4AF37;
+    }
+    ul { list-style: none; padding: 0; margin: 0; }
+</style>
+{% endblock %}

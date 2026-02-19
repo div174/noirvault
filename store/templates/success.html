@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-[60vh] flex flex-col items-center justify-center text-center px-6">
+    <div class="mb-8 relative">
+        <div class="absolute inset-0 bg-gold/20 blur-xl rounded-full"></div>
+        <div class="w-20 h-20 border border-gold/30 rounded-full flex items-center justify-center relative bg-richblack">
+            <i class="fas fa-check text-2xl text-gold"></i>
+        </div>
+    </div>
+    
+    <h1 class="text-4xl md:text-5xl font-serif text-white mb-6">Payment Successful</h1>
+    <p class="text-subtlegray font-light text-lg mb-12 max-w-md mx-auto leading-relaxed">
+        Thank you for your order. Your transaction has been completed successfully. 
+        <br/><span class="text-xs uppercase tracking-widest mt-4 block text-white/30">Order #{{ order.id|default:"Processing..." }}</span>
+    </p>
+    
+    <a href="{% url 'home' %}" class="bg-white text-black px-10 py-4 font-bold text-xs uppercase tracking-[0.2em] hover:bg-goldlight transition shadow-lg">
+        Continue Shopping
+    </a>
+</div>
+{% endblock %}

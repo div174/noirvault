@@ -1,0 +1,126 @@
+/* Modern Balanced Luxury Card - Breathable & Dark */
+.card {
+    position: relative;
+    width: 100%;
+    height: 460px;
+    box-sizing: border-box;
+
+    /* Surface - Matches zincdark */
+    background: #161616;
+
+    /* Extremely subtle border for definition */
+    border: 1px solid rgba(255, 255, 255, 0.03);
+
+    border-radius: 0px;
+
+    /* Multi-layer shadow for depth (Ambient + Key) */
+    box-shadow:
+        0 10px 40px -10px rgba(0, 0, 0, 0.5),
+        0 0 2px 0 rgba(255, 255, 255, 0.05) inset;
+
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    cursor: pointer;
+
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
+}
+
+/* Image Container */
+.card-image-container {
+    height: 360px;
+    /* Dominant image area */
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    background-color: #111;
+}
+
+.card-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+}
+
+/* Hover - Minimal Lift */
+/* Hover - Elevated Lift */
+.card:hover {
+    transform: translateY(-6px);
+    /* Stronger, more diffused shadow on hover */
+    box-shadow:
+        0 25px 50px -12px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(212, 175, 55, 0.1);
+    /* Subtle gold hint */
+}
+
+.card:hover .card-image-container img {
+    transform: scale(1.03);
+    /* Very subtle zoom */
+}
+
+/* Content Area - Minimalist */
+.card-content {
+    padding: 1.25rem 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: transparent;
+    text-align: center;
+}
+
+.card h4 {
+    font-family: 'Inter', sans-serif;
+    /* Clean sans for product names */
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #E5E5E5;
+    margin-bottom: 0.25rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.card p {
+    font-family: 'Inter', sans-serif;
+    color: #888;
+    font-size: 0.85rem;
+}
+
+/* Action Button - Overlay */
+.btn-action {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card:hover .btn-action {
+    opacity: 1;
+}
+
+.card button {
+    background: rgba(255, 255, 255, 0.95);
+    color: #000;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 1.25rem;
+    width: 100%;
+    cursor: pointer;
+}
+
+/* Unified Panel Depth for Cart/Checkout */
+.panel-depth {
+    background: #161616;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    box-shadow:
+        0 20px 40px -5px rgba(0, 0, 0, 0.4),
+        0 0 2px 0 rgba(255, 255, 255, 0.05) inset;
+}

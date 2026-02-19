@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-[60vh] flex flex-col items-center justify-center text-center px-6">
+    <div class="mb-8 relative">
+        <div class="w-20 h-20 border border-white/10 rounded-full flex items-center justify-center relative bg-richblack">
+            <i class="fas fa-times text-2xl text-subtlegray"></i>
+        </div>
+    </div>
+    
+    <h1 class="text-4xl md:text-5xl font-serif text-white mb-6">Payment Cancelled</h1>
+    <p class="text-subtlegray font-light text-lg mb-12 max-w-md mx-auto leading-relaxed">
+        Your payment was not processed. No charges were made.
+    </p>
+    
+    <div class="flex gap-4">
+        <a href="{% url 'cart' %}" class="bg-white text-black px-10 py-4 font-bold text-xs uppercase tracking-[0.2em] hover:bg-goldlight transition shadow-lg">
+            Return to Cart
+        </a>
+        <a href="{% url 'contact' %}" class="bg-transparent border border-white/20 text-white px-10 py-4 font-bold text-xs uppercase tracking-[0.2em] hover:bg-white/5 transition">
+            Contact Support
+        </a>
+    </div>
+</div>
+{% endblock %}

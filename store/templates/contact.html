@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="min-h-[85vh] flex items-center justify-center px-4 relative py-20">
+    
+    <div class="w-full max-w-[500px] mx-auto relative z-10">
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <h2 class="text-2xl font-bold font-sans tracking-tight text-white mb-2">Contact Us</h2>
+            <p class="text-subtlegray text-sm">We'd love to hear from you.</p>
+        </div>
+
+        <div class="bg-[#141414] border border-white/10 rounded-2xl p-8 shadow-2xl backdrop-blur-sm">
+            <form class="space-y-6">
+                <div class="grid grid-cols-2 gap-5">
+                    <div class="group">
+                        <label class="block text-xs font-medium text-gray-400 mb-1.5 ml-1 transition group-focus-within:text-white">Name</label>
+                        <input type="text" class="w-full">
+                    </div>
+                    <div class="group">
+                        <label class="block text-xs font-medium text-gray-400 mb-1.5 ml-1 transition group-focus-within:text-white">Email</label>
+                        <input type="email" class="w-full">
+                    </div>
+                </div>
+                
+                <div class="group">
+                    <label class="block text-xs font-medium text-gray-400 mb-1.5 ml-1 transition group-focus-within:text-white">Subject</label>
+                    <div class="relative">
+                        <select class="w-full appearance-none cursor-pointer">
+                            <option>General Inquiry</option>
+                            <option>Order Status</option>
+                            <option>Press</option>
+                        </select>
+                        <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none opacity-50">
+                            <i class="fas fa-chevron-down text-xs text-white"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group">
+                    <label class="block text-xs font-medium text-gray-400 mb-1.5 ml-1 transition group-focus-within:text-white">Message</label>
+                    <textarea rows="5" class="w-full resize-none"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-white text-black h-11 rounded-lg font-medium text-sm hover:bg-gray-200 transition-all duration-200 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(255,255,255,0.2)]">
+                    Send Message
+                </button>
+            </form>
+        </div>
+        
+        <div class="text-center mt-8">
+            <a href="mailto:support@noirvault.com" class="text-sm text-gray-500 hover:text-white transition">support@noirvault.com</a>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Linear-style Inputs */
+    input, textarea, select {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 0.5rem; /* rounded-lg */
+        padding: 0.75rem 1rem;
+        color: white;
+        font-family: inherit;
+        font-size: 0.9375rem; /* 15px */
+        transition: all 0.2s ease-out;
+    }
+    input:focus, textarea:focus, select:focus {
+        outline: none;
+        border-color: rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.05);
+        box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.02);
+    }
+</style>
+{% endblock %}

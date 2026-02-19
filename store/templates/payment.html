@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="min-h-[85vh] flex items-center justify-center py-20 px-6">
+    <div class="w-full max-w-md">
+        
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <span class="text-gold text-[10px] font-bold tracking-[0.4em] uppercase mb-4 block">Secure Checkout</span>
+            <div class="flex items-center justify-center gap-3 text-white mb-2">
+                <i class="fas fa-lock text-gold"></i>
+                <h1 class="text-2xl font-serif">Payment Details</h1>
+            </div>
+            <p class="text-subtlegray text-xs">Complete your purchase securely.</p>
+        </div>
+
+        <!-- Payment Card -->
+        <div class="bg-zincdark border border-white/10 p-8 shadow-2xl relative overflow-hidden rounded-sm">
+            <!-- Decorative Blur -->
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-gold/10 blur-3xl rounded-full pointer-events-none"></div>
+
+            <div class="flex justify-between items-end mb-8 border-b border-white/5 pb-6">
+                <div>
+                     <p class="text-[10px] uppercase tracking-widest text-subtlegray mb-1">Total Amount</p>
+                     <p class="text-3xl text-white font-serif">${{ total|floatformat:2 }}</p>
+                </div>
+                <div class="flex gap-2 opacity-70 grayscale hover:grayscale-0 transition-all duration-300">
+                    <i class="fab fa-cc-visa text-2xl text-white"></i>
+                    <i class="fab fa-cc-mastercard text-2xl text-white"></i>
+                    <i class="fab fa-cc-amex text-2xl text-white"></i>
+                </div>
+            </div>
+
+            <form id="payment-form" action="{% url 'payment-success' %}" method="get" class="space-y-5">
+                <!-- Simulation Data -->
+                <input type="hidden" name="session_id" value="{{ session_id }}">
+
+                <!-- Card Number -->
+                <div class="space-y-2">
+                    <label class="text-[10px] uppercase tracking-widest text-subtlegray block">Card Number</label>
+                    <div class="relative">
+                        <input type="text" id="card-number" placeholder="4242 4242 4242 4242" 
+                               class="w-full bg-richblack border border-white/10 p-3 pl-10 text-white text-sm focus:outline-none focus:border-gold/50 transition tracking-widest font-mono"
+                               maxlength="19">
+                        <i class="fas fa-credit-card absolute left-3 top-3.5 text-subtlegray text-xs"></i>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-5">
+                    <!-- Expiry -->
+                    <div class="space-y-2">
+                        <label class="text-[10px] uppercase tracking-widest text-subtlegray block">Expiry</label>
+                        <input type="text" placeholder="MM / YY" 
+                               class="w-full bg-richblack border border-white/10 p-3 text-white text-sm focus:outline-none focus:border-gold/50 transition text-center font-mono"
+                               maxlength="7">
+                    </div>
+                    <!-- CVC -->
+                    <div class="space-y-2">
+                        <label class="text-[10px] uppercase tracking-widest text-subtlegray block">CVC</label>
+                        <div class="relative">
+                             <input type="text" placeholder="123" 
+                                   class="w-full bg-richblack border border-white/10 p-3 text-white text-sm focus:outline-none focus:border-gold/50 transition text-center font-mono"
+                                   maxlength="3">
+                             <i class="fas fa-question-circle absolute right-3 top-3.5 text-subtlegray/50 text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cardholder Name -->
+                <div class="space-y-2">
+                    <label class="text-[10px] uppercase tracking-widest text-subtlegray block">Cardholder Name</label>
+                    <input type="text" placeholder="JOHN DOE" value="{{ request.user.get_full_name|upper }}"
+                           class="w-full bg-richblack border border-white/10 p-3 text-white text-sm focus:outline-none focus:border-gold/50 transition uppercase tracking-wider">
+                </div>
+
+                <button type="submit" id="pay-btn" class="w-full bg-white text-black py-4 mt-4 font-bold text-[11px] uppercase tracking-[0.2em] hover:bg-goldlight transition shadow-lg flex items-center justify-center gap-2 group">
+                    <span>Pay Now</span>
+                    <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                </button>
+            </form>
+            
+            <div id="processing-view" class="hidden absolute inset-0 bg-richblack/95 z-10 flex flex-col items-center justify-center text-center p-8 backdrop-blur-sm">
+                <div class="w-12 h-12 border-2 border-white/10 border-t-gold rounded-full animate-spin mb-4"></div>
+                <h3 class="text-white text-sm uppercase tracking-widest mb-1">Processing Payment...</h3>
+                <p class="text-subtlegray text-xs">Do not close this window.</p>
+            </div>
+
+        </div>
+        
+        <p class="text-center text-[10px] text-zinc-600 mt-6 flex justify-center items-center gap-2">
+            <i class="fas fa-shield-alt"></i> 256-bit SSL Encrypted Simulation
+        </p>
+    </div>
+</section>
+
+<script>
+    const form = document.getElementById('payment-form');
+    const payBtn = document.getElementById('pay-btn');
+    const processingView = document.getElementById('processing-view');
+    const cardInput = document.getElementById('card-number');
+    const expiryInput = document.querySelector('input[placeholder="MM / YY"]');
+    const cvcInput = document.querySelector('input[placeholder="123"]');
+    const nameInput = document.querySelector('input[placeholder="JOHN DOE"]');
+
+    // Auto-format card number
+    cardInput.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, '').substring(0, 16);
+        let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+        e.target.value = formattedValue;
+    });
+
+    // Auto-format Expiry
+    expiryInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, ''); // Clean to digits only
+        
+        if (value.length > 4) {
+            value = value.substring(0, 4);
+        }
+        
+        // Formatting Logic
+        if (value.length > 2) {
+            value = value.substring(0, 2) + ' / ' + value.substring(2);
+        } else if (value.length === 2 && e.inputType !== 'deleteContentBackward') {
+             value = value + ' / ';
+        }
+        
+        e.target.value = value;
+    });
+    
+    // CVC Numbers only
+    cvcInput.addEventListener('input', function(e) {
+        e.target.value = e.target.value.replace(/\D/g, '').substring(0, 3);
+    });
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        let isValid = true;
+        
+        // Card Number (16 digits)
+        let rawCard = cardInput.value.replace(/\s/g, '');
+        if (rawCard.length < 16) {
+            cardInput.classList.add('border-red-500');
+            isValid = false;
+        } else {
+            cardInput.classList.remove('border-red-500');
+        }
+        
+        // Expiry (5 chars total: MM / YY)
+        if (expiryInput.value.length < 7) { // "MM / YY" is 7 chars
+             expiryInput.classList.add('border-red-500');
+             isValid = false;
+        } else {
+             // Basic date check
+             let parts = expiryInput.value.split('/');
+             if (parts.length === 2) {
+                 let month = parseInt(parts[0].trim());
+                 let year = parseInt(parts[1].trim());
+                 if (month < 1 || month > 12) {
+                     expiryInput.classList.add('border-red-500');
+                     isValid = false;
+                 } else {
+                     expiryInput.classList.remove('border-red-500');
+                 }
+             } else {
+                 expiryInput.classList.add('border-red-500');
+                 isValid = false;
+             }
+        }
+        
+         // CVC (3 digits)
+        if (cvcInput.value.length < 3) {
+             cvcInput.classList.add('border-red-500');
+             isValid = false;
+        } else {
+             cvcInput.classList.remove('border-red-500');
+        }
+        
+        // Name
+        if (nameInput.value.trim() === '') {
+             nameInput.classList.add('border-red-500');
+             isValid = false;
+        } else {
+             nameInput.classList.remove('border-red-500');
+        }
+        
+        if (!isValid) {
+            // Shake effect or toast could go here
+            return;
+        }
+
+        // Simulate Processing
+        processingView.classList.remove('hidden');
+        processingView.classList.add('flex');
+        
+        // Delay to mimic network request
+        setTimeout(() => {
+            // SIMULATED FAILURE for specific card number
+            if (rawCard === '0000000000000000' || rawCard === '4000400040004000') {
+                processingView.classList.add('hidden');
+                alert('Payment Failed: Card Declined (Simulation)');
+                return;
+            }
+            form.submit();
+        }, 2000);
+    });
+</script>
+{% endblock %}
